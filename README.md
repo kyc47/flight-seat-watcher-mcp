@@ -122,43 +122,56 @@ TELEGRAM_CHAT_ID=
 
 이 서버는 `Claude Desktop`, `Claude Code`, `Codex`, `Cursor`, `VS Code Agent Mode` 등 로컬 MCP 클라이언트에서 사용할 수 있습니다.
 
-## AI 기반 활용 방법
+## AI Prompt Examples
 
-이 저장소는 AI 도구가 바로 읽고 사용할 수 있도록 별도 안내 파일도 포함합니다.
+AI 도구에서 바로 사용할 수 있도록 예시 프롬프트를 아래에 정리했습니다.
 
-- [AGENTS.md](./AGENTS.md): AI 에이전트용 운영 가이드
-- [project_manifest.json](./project_manifest.json): 기계 친화적인 프로젝트 메타데이터
+### 1. 저장소 구조 파악
 
-### AI가 이 저장소를 사용할 때 권장 흐름
-
-1. `AGENTS.md`를 먼저 읽어 프로젝트 구조와 실행 경로를 파악합니다.
-2. 필요하면 `project_manifest.json`으로 엔트리포인트와 핵심 모듈을 확인합니다.
-3. MCP 클라이언트에서는 `bin/run_mcp.sh`를 엔트리포인트로 등록합니다.
-4. 텔레그램 봇 자동화가 필요하면 `bin/run_telegram_bot.sh`를 사용합니다.
-
-### MCP에서 조회할 때 사용하는 watch 형식
-
-`check_flights`와 `get_manual_summary`는 `watches` 배열을 받습니다. 각 항목은 아래 형식을 따릅니다.
-
-```json
-{
-  "origin": "ICN",
-  "destination": "NRT",
-  "market": "international",
-  "trip_type": "roundtrip",
-  "departure_date": "20260501",
-  "return_date": "20260504",
-  "departure_time_range": "06:00~22:00",
-  "return_time_range": "06:00~22:00",
-  "adults": 1
-}
+```text
+이 저장소를 분석해줘.
+먼저 README.md, AGENTS.md, project_manifest.json을 읽고
+실행 엔트리포인트, 핵심 모듈, 환경변수, MCP 사용 방식을 요약해줘.
+설명할 때는 다음 항목을 반드시 포함해줘:
+- 텔레그램 봇 실행 방법
+- MCP 서버 실행 방법
+- 실제 조회 로직이 들어있는 파일
+- watch 설정 형식
 ```
 
-제약:
+### 2. MCP 기준 항공편 조회 요청
 
-- `watches`는 최대 5개까지 지원합니다.
-- `market`은 `domestic` 또는 `international`
-- `trip_type`은 `oneway` 또는 `roundtrip`
+```text
+이 저장소의 MCP 서버 기준으로 항공편 조회 예시를 만들어줘.
+조건은 아래와 같아:
+- 출발: ICN
+- 도착: NRT
+- 왕복
+- 출발일: 20260501
+- 복귀일: 20260504
+- 출발 시간대: 06:00~22:00
+- 복귀 시간대: 06:00~22:00
+
+check_flights 툴에 넘길 watches 배열 JSON만 출력해줘.
+```
+
+### 3. 텔레그램 봇 수정 요청
+
+```text
+이 저장소에서 텔레그램 봇 동작을 수정해줘.
+작업 전 README.md, AGENTS.md, project_manifest.json, scripts/telegram_bot_runner.py, scripts/flight_watch_dynamic.py를 먼저 읽고
+현재 대화 흐름과 상태 저장 구조를 파악한 뒤 수정해줘.
+수정 후에는 변경한 파일, 동작 방식, 검증 결과를 함께 알려줘.
+```
+
+### 4. 새 기능 추가 요청
+
+```text
+이 저장소에 새 기능을 추가해줘.
+반드시 기존 watch 설정 구조와 MCP 인터페이스를 유지하면서 작업하고,
+필요하면 README.md, AGENTS.md, project_manifest.json도 함께 업데이트해줘.
+수정 후에는 어떤 명령으로 실행하고 검증하면 되는지도 적어줘.
+```
 
 ## 수동 실행
 
