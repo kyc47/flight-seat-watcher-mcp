@@ -29,7 +29,7 @@ Legacy single-run helpers still exist in:
 ## Important Files
 
 - `README.md`: human-facing project documentation
-- `requirements.txt`: Python dependencies
+- `pyproject.toml`: uv project metadata and dependencies
 - `bin/setup_local.sh`: local setup helper
 - `bin/run_telegram_bot.sh`: start Telegram bot
 - `bin/run_mcp.sh`: start MCP server
@@ -52,7 +52,6 @@ Recommended setup:
 
 ```bash
 ./bin/setup_local.sh
-source .venv/bin/activate
 ```
 
 ## Runtime Commands
@@ -72,7 +71,7 @@ Run MCP server:
 Manual single-run check:
 
 ```bash
-python3 scripts/naver_flight_watch.py
+uv run python scripts/naver_flight_watch.py
 ```
 
 ## MCP Tools
@@ -120,6 +119,7 @@ When a user starts a new watch in Telegram:
 ## Safe Assumptions for AI Agents
 
 - Use the `bin/` scripts instead of hardcoding Python paths
+- Prefer `uv run` and `uv sync` for execution and dependency setup
 - Prefer `TELEGRAM_BOT_TOKEN` over `TELEGRAMBOT`
 - Do not commit `.env` or `.state`
 - If Chrome is not auto-detected, instruct the user to set `CHROME_BINARY`

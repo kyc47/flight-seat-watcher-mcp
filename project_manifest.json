@@ -12,7 +12,7 @@
       "description": "Runs the stdio MCP server."
     },
     "manual_check": {
-      "script": "scripts/naver_flight_watch.py",
+      "script": "uv run python scripts/naver_flight_watch.py",
       "description": "Runs a manual one-off flight check."
     }
   },
@@ -52,6 +52,7 @@
     "supports_international": true,
     "airport_co_kr_domestic_only": true,
     "requires_selenium_for_naver": true,
-    "mcp_transport": "stdio"
+    "mcp_transport": "stdio",
+    "dependency_manager": "uv"
   }
 }

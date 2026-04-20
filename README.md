@@ -19,19 +19,19 @@ Flight Seat Watcher는 `Naver Flights`와 `airport.co.kr`를 이용해 항공권
 git clone https://github.com/kyc47/flight-seat-watcher.git
 cd flight-seat-watcher
 ./bin/setup_local.sh
-source .venv/bin/activate
 ```
 
 ## 설치 요구 사항
 
 - Python 3
+- `uv`
 - Google Chrome
 - `selenium`
 
 의존성 설치:
 
 ```bash
-python3 -m pip install -r requirements.txt
+uv sync
 ```
 
 Chrome 경로가 자동으로 잡히지 않으면 `.env`에 아래 값을 추가할 수 있습니다.
@@ -62,7 +62,7 @@ TELEGRAM_CHAT_ID=
 ### 2. 실행
 
 ```bash
-./bin/run_telegram_bot.sh
+uv run python scripts/telegram_bot_runner.py
 ```
 
 ### 3. 초기 등록 흐름
@@ -94,7 +94,7 @@ TELEGRAM_CHAT_ID=
 실행:
 
 ```bash
-./bin/run_mcp.sh
+uv run python scripts/flight_watch_mcp.py
 ```
 
 제공 도구:
@@ -167,7 +167,7 @@ AI 도구에서 바로 사용할 수 있도록 설치/구성용 프롬프트 예
 단일 실행으로 상태를 확인하려면 아래 명령을 사용할 수 있습니다.
 
 ```bash
-python3 scripts/naver_flight_watch.py
+uv run python scripts/naver_flight_watch.py
 ```
 
 ## 참고 사항

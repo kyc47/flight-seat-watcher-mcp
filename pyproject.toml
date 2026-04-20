@@ -1,0 +1,12 @@
+[project]
+name = "flight-seat-watcher"
+version = "0.1.0"
+description = "Configurable Telegram and MCP-based flight availability watcher."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "selenium>=4.30.0",
+]
+
+[tool.uv]
+package = false
