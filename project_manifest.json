@@ -1,0 +1,57 @@
+{
+  "name": "flight-seat-watcher",
+  "description": "Configurable Telegram and MCP-based flight availability watcher.",
+  "language": "python",
+  "entrypoints": {
+    "telegram_bot": {
+      "script": "bin/run_telegram_bot.sh",
+      "description": "Runs the Telegram polling bot for per-user watch configuration and alerts."
+    },
+    "mcp_server": {
+      "script": "bin/run_mcp.sh",
+      "description": "Runs the stdio MCP server."
+    },
+    "manual_check": {
+      "script": "scripts/naver_flight_watch.py",
+      "description": "Runs a manual one-off flight check."
+    }
+  },
+  "core_modules": [
+    {
+      "path": "scripts/flight_watch_dynamic.py",
+      "role": "Primary watch configuration, Telegram helpers, and state/query formatting."
+    },
+    {
+      "path": "scripts/telegram_bot_runner.py",
+      "role": "Telegram bot polling loop and chat interaction flow."
+    },
+    {
+      "path": "scripts/flight_watch_mcp.py",
+      "role": "MCP stdio server and tool dispatch."
+    },
+    {
+      "path": "scripts/naver_flight_watch.py",
+      "role": "Legacy single-run watch helpers and Selenium-based scraping primitives."
+    }
+  ],
+  "environment_variables": [
+    "TELEGRAM_BOT_TOKEN",
+    "TELEGRAMBOT",
+    "TELEGRAM_CHAT_ID",
+    "CHROME_BINARY",
+    "GOOGLE_CHROME_BIN"
+  ],
+  "mcp_tools": [
+    "check_flights",
+    "get_manual_summary",
+    "send_telegram_test"
+  ],
+  "constraints": {
+    "max_watches_per_chat": 5,
+    "supports_domestic": true,
+    "supports_international": true,
+    "airport_co_kr_domestic_only": true,
+    "requires_selenium_for_naver": true,
+    "mcp_transport": "stdio"
+  }
+}
