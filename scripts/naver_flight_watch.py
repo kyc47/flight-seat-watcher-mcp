@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from __future__ import annotations
+
 import argparse
 import json
 import os
@@ -12,9 +14,14 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
+try:
+    from selenium import webdriver
+    from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.common.by import By
+except ModuleNotFoundError:
+    webdriver = None
+    Options = None
+    By = None
 
 
 DEFAULT_URL = (
@@ -82,7 +89,21 @@ def load_env_file(path: str = ".env") -> dict[str, str]:
     return env
 
 
+def getenv_any(*keys: str) -> str:
+    for key in keys:
+        value = os.environ.get(key, "").strip()
+        if value:
+            return value
+    return ""
+
+
+def get_telegram_token() -> str:
+    return getenv_any("TELEGRAM_BOT_TOKEN", "TELEGRAMBOT")
+
+
 def build_driver(window_size: str) -> webdriver.Chrome:
+    if webdriver is None or Options is None:
+        raise RuntimeError("selenium is not installed. Install it before running flight checks.")
     options = Options()
     options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
@@ -98,7 +119,9 @@ def build_driver(window_size: str) -> webdriver.Chrome:
         "--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
         "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
     )
-    options.binary_location = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    chrome_binary = getenv_any("CHROME_BINARY", "GOOGLE_CHROME_BIN")
+    if chrome_binary:
+        options.binary_location = chrome_binary
     return webdriver.Chrome(options=options)
 
 
@@ -739,12 +762,12 @@ if __name__ == "__main__":
     print_summary(current_state, added_flights)
 
     if args.send_telegram:
-        token = os.environ.get("TELEGRAMBOT", "").strip()
+        token = get_telegram_token()
         chat_id_file = Path(args.telegram_chat_id_file)
         subscribers_file = Path(args.telegram_subscribers_file)
         schedule_state_file = Path(args.schedule_state_file)
         explicit_chat_id = (
-            os.environ.get("TELEGRAM_CHAT_ID", "").strip()
+            getenv_any("TELEGRAM_CHAT_ID")
             or load_text_file(chat_id_file)
             or None
         )

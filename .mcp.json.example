@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "flight-seat-watcher": {
+      "command": "/ABSOLUTE/PATH/TO/flight-seat-watcher/bin/run_mcp.sh",
+      "args": [
+      ]
+    }
+  }
+}
